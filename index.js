@@ -8,6 +8,7 @@ const fs = require('fs');
 // 获取http模块,来进行网络通信,搭建http服务器
 const http = require('http');
 const url = require('url');
+const slugify = require('slugify');
 const replaceTemplate = require('./modules/replaceTemplate');
 ////////////////////////////////////////////////////////
 // FILES
@@ -70,6 +71,9 @@ const tempProduct = fs.readFileSync(
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObject = JSON.parse(data);
+
+const slugs = dataObject.map((el) => slugify(el.productName, { lower: true }));
+console.log(slugs);
 
 // 创建http服务器
 const server = http.createServer((requst, response) => {
