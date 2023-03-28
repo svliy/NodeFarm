@@ -79,6 +79,7 @@ const server = http.createServer((requst, response) => {
   // Overview Page
   if (pathname === '/' || pathname === '/overview') {
     // 替换模板中的占位符,制作卡片
+    response.writeHead(200, { 'Content-type': 'text/html' });
     const cardsHtml = dataObject
       .map((el) => replaceTemplate(tempCard, el))
       .join('');
@@ -87,14 +88,13 @@ const server = http.createServer((requst, response) => {
 
     // Product Page
   } else if (pathname === '/product') {
-    console.log(query);
-    response.end('This is the PRODUCT');
-
+    response.writeHead(200, { 'Content-type': 'text/html' });
+    const product = dataObject[query.id];
+    const output = replaceTemplate(tempProduct, product);
+    response.end(output);
     // API
   } else if (pathname === '/api') {
-    response.writeHead(200, {
-      'Content-type': 'application/json',
-    });
+    response.writeHead(200, { 'Content-type': 'application/json' });
     response.end(data);
 
     // Not Found
@@ -111,5 +111,3 @@ const server = http.createServer((requst, response) => {
 server.listen(8000, '127.0.0.1', () => {
   console.log('Listening to requests on port 8000');
 });
-
-//
